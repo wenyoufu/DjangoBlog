@@ -1,73 +1,76 @@
 {% load blog_tags %}
 {% load cache %}
 <article id="post-{{ article.pk }} "
-         class="post-{{ article.pk }} post type-post status-publish format-standard hentry">
-    <header class="entry-header">
+class="post-{{ article.pk }} post type-post status-publish format-standard hentry"
+style="background-color: #fff; color: #333; padding: 20px; border-radius: 10px; box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);">
+<header class="entry-header">
 
-        <h1 class="entry-title">
-            {% if  isindex %}
-                {% if article.article_order > 0 %}
-                    <a href="{{ article.get_absolute_url }}"
-                       rel="bookmark">【置顶】{{ article.title }}</a>
-                {% else %}
-                    <a href="{{ article.get_absolute_url }}"
-                       rel="bookmark">{{ article.title }}</a>
-                {% endif %}
-
-            {% else %}
-                {{ article.title }}
-            {% endif %}
-        </h1>
-        <div class="comments-link">
-            {% if article.comment_status == "o" and open_site_comment %}
-                <a href="{{ article.get_absolute_url }}#comments" class="ds-thread-count" data-thread-key="3815"
-                   rel="nofollow">
-                    <span class="leave-reply">
-                    {% if article.comment_set and article.comment_set.count %}
-                        {{ article.comment_set.count }}个评论
-                    {% else %}
-                        发表评论
-                    {% endif %}
-                    </span>
-                </a>
-            {% endif %}
-            <div style="float:right">
-                {{ article.views }} views
-            </div>
-        </div><!-- .comments-link -->
-        <br/>
-        {% if article.type == 'a' %}
-            {% if not isindex %}
-                {% cache 36000 breadcrumb article.pk %}
-                    {% load_breadcrumb article %}
-                {% endcache %}
-            {% endif %}
-        {% endif %}
-    </header><!-- .entry-header -->
-
-    <div class="entry-content" itemprop="articleBody">
+    <h1 class="entry-title" style="font-size: 36px;">
         {% if  isindex %}
-            {{ article.body|custom_markdown|escape|truncatechars_content }}
-            <p class='read-more'><a
-                    href=' {{ article.get_absolute_url }}'>Read more</a></p>
-        {% else %}
-
-            {% if article.show_toc %}
-                {% get_markdown_toc article.body as toc %}
-                <b>目录:</b>
-                {{ toc|safe }}
-
-                <hr class="break_line"/>
+            {% if article.article_order > 0 %}
+                <a href="{{ article.get_absolute_url }}"
+                   rel="bookmark" style="text-decoration: none; color: #444;">【置顶】{{ article.title }}</a>
+            {% else %}
+                <a href="{{ article.get_absolute_url }}"
+                   rel="bookmark" style="text-decoration: none; color: #444;">{{ article.title }}</a>
             {% endif %}
-            <div class="article">
 
-                    {{ article.body|custom_markdown|escape }}
-
-            </div>
+        {% else %}
+            {{ article.title }}
         {% endif %}
+    </h1>
+    <div class="comments-link">
+        {% if article.comment_status == "o" and open_site_comment %}
+            <a href="{{ article.get_absolute_url }}#comments" class="ds-thread-count" data-thread-key="3815"
+               rel="nofollow" style="text-decoration: none; color: #444;">
+                <span class="leave-reply">
+                {% if article.comment_set and article.comment_set.count %}
+                <div style ="font-weight: bold; font-size: 16px;">
+                    {{ article.comment_set.count }}个评论
+                {% else %}
+                    <!-- 发表评论 -->
+                    <div style ="font-weight: bold; font-size: 16px;">
+                        发表评论
+                {% endif %}
+                </span>
+            </a>
+        {% endif %}
+        <div style="float:right; font-weight: bold; font-size: 18px;">
+            {{ article.views }} views
+        </div>
+    </div><!-- .comments-link -->
+    <br/>
+    {% if article.type == 'a' %}
+        {% if not isindex %}
+            {% cache 36000 breadcrumb article.pk %}
+                {% load_breadcrumb article %}
+            {% endcache %}
+        {% endif %}
+    {% endif %}
+</header><!-- .entry-header -->
 
-    </div><!-- .entry-content -->
+<div class="entry-content" itemprop="articleBody">
+    {% if  isindex %}
+        {{ article.body|custom_markdown|escape|truncatechars_content }}
+        <p class='read-more'><a
+                href=' {{ article.get_absolute_url }}' style="text-decoration: none; color: #fff; background-color: #333; padding: 10px; border-radius: 5px;">Read more</a></p>
+    {% else %}
 
-    {% load_article_metas article user %}
+        {% if article.show_toc %}
+            {% get_markdown_toc article.body as toc %}
+            <b style="font-size: 20px; font-weight: bold; color: #444;">目录:</b>
+            {{ toc|safe }}
 
+            <hr class="break_line"/>
+        {% endif %}
+        <div class="article">
+
+                {{ article.body|custom_markdown|escape }}
+
+        </div>
+    {% endif %}
+
+</div><!-- .entry-content -->
+
+{% load_article_metas article user %}
 </article><!-- #post -->
