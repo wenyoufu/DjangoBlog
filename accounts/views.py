@@ -152,19 +152,22 @@ def account_result(request):
         return HttpResponseRedirect('/')
     if type and type in ['register', 'validation']:
         if type == 'register':
-            content = '''
-    恭喜您注册成功，一封验证邮件已经发送到您的邮箱，请验证您的邮箱后登录本站。
-    '''
-            title = '注册成功'
-        else:
-            c_sign = get_sha256(get_sha256(settings.SECRET_KEY + str(user.id)))
-            sign = request.GET.get('sign')
-            if sign != c_sign:
-                return HttpResponseForbidden()
+    #         content = '''
+    # 恭喜您注册成功，一封验证邮件已经发送到您的邮箱，请验证您的邮箱后登录本站。
+    # '''
+            # title = '注册成功'
+        # else:
+            # c_sign = get_sha256(get_sha256(settings.SECRET_KEY + str(user.id)))
+            # sign = request.GET.get('sign')
+            # if sign != c_sign:
+            #     return HttpResponseForbidden()
             user.is_active = True
             user.save()
+            # content = '''
+            # 恭喜您已经成功的完成邮箱验证，您现在可以使用您的账号来登录本站。
+            # '''
             content = '''
-            恭喜您已经成功的完成邮箱验证，您现在可以使用您的账号来登录本站。
+            恭喜您注册成功，您现在可以使用您的账号或者邮箱来登录本站。
             '''
             title = '验证成功'
         return render(request, 'account/result.html', {
